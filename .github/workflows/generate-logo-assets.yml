@@ -1,0 +1,31 @@
+name: Générer le logo et les icônes
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'logo-officiel.txt'
+      - '.github/workflows/generate-logo-assets.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Décoder le logo officiel
+        run: |
+          base64 --decode logo-officiel.txt > logo-officiel.png
+          cp logo-officiel.png icon-180.png
+          cp logo-officiel.png icon-192.png
+          cp logo-officiel.png icon-512.png
+      - name: Publier les fichiers générés
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add logo-officiel.png icon-180.png icon-192.png icon-512.png
+          git diff --cached --quiet || git commit -m "Générer le logo officiel et les icônes PWA"
+          git push
