@@ -1,0 +1,20 @@
+.official-logo{width:min(360px,88vw)!important;max-height:420px;object-fit:contain;border-radius:0!important}
+.media-open{display:block;width:100%;padding:0;border:0;background:transparent;cursor:zoom-in}
+.media-open img,.media-open video{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
+.story-feed-card{background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:var(--shadow)}
+.story-preview{position:relative;width:100%;border:0;padding:0;background:#111;display:block}
+.story-preview img,.story-preview video{width:100%;aspect-ratio:9/16;object-fit:cover;display:block}
+.story-info{padding:12px}.story-info strong,.story-info span{display:block}.story-info span{font-size:.74rem;color:var(--muted)}
+.delete-media{margin-top:9px;border:0;background:#fff1ef;color:#9f3b34;border-radius:999px;padding:8px 11px;font-size:.76rem}
+.play-badge{position:absolute;inset:50% auto auto 50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.55);color:#fff;font-size:1.4rem}
+.story-overlay-preview,.viewer-overlay{position:absolute;transform:translate(-50%,-50%);color:#fff;font-weight:800;text-shadow:0 2px 12px #000;text-align:center;max-width:80%;font-size:clamp(1.1rem,5vw,2.1rem);pointer-events:none}
+.viewer-media{position:relative;max-width:min(92vw,760px);max-height:82vh}
+.viewer-media img,.viewer-media video{max-width:100%;max-height:82vh;display:block;object-fit:contain}
+.story-bubble span video{width:100%;height:100%;border-radius:50%;object-fit:cover;border:3px solid #fff}
+.story-stage #story-image{width:100%;height:100%;object-fit:cover;display:none}
+.movable-story-text{position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);z-index:5;color:#fff;font-size:2rem;font-weight:800;text-shadow:0 2px 12px #000;outline:none;max-width:82%;text-align:center;touch-action:none;cursor:move}
+.record-timer{position:absolute;top:18px;left:50%;transform:translateX(-50%);z-index:6;background:rgba(0,0,0,.55);padding:7px 12px;border-radius:999px;color:#fff}
+.capture-control.video-record{border-color:#f55}.capture-control.recording{background:#e33!important;animation:pulse 1s infinite}
+.editor-caption{min-width:180px;border:1px solid #444;background:#181818;color:#fff;border-radius:999px;padding:10px 14px}
+@keyframes pulse{50%{transform:scale(.88)}}
+@media(max-width:480px){.official-logo{width:min(320px,92vw)!important}.viewer-media{max-width:100vw}.movable-story-text{font-size:1.7rem}}
