@@ -16,16 +16,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Décoder le logo officiel
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Installer Pillow
+        run: python -m pip install pillow
+      - name: Générer le logo officiel et les icônes
         run: |
-          base64 --decode logo-officiel.txt > logo-officiel.png
-          cp logo-officiel.png icon-180.png
-          cp logo-officiel.png icon-192.png
-          cp logo-officiel.png icon-512.png
+          python - <<'PY'
+          import base64, io
+          from pathlib import Path
+          from PIL import Image
+
+          encoded = ''.join(Path('logo-officiel.txt').read_text(encoding='utf-8').split())
+          encoded += '=' * (-len(encoded) % 4)
+          raw = base64.b64decode(encoded, validate=False)
+          source = Image.open(io.BytesIO(raw)).convert('RGB')
+          source.save('logo-officiel.png', optimize=True)
+          for size in (180, 192, 512):
+              source.resize((size, size), Image.Resampling.LANCZOS).save(f'icon-{size}.png', optimize=True)
+          PY
       - name: Publier les fichiers générés
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add logo-officiel.png icon-180.png icon-192.png icon-512.png
           git diff --cached --quiet || git commit -m "Générer le logo officiel et les icônes PWA"
+          git pull --rebase
           git push
