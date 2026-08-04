@@ -21,26 +21,19 @@ jobs:
           python-version: '3.12'
       - name: Installer Pillow
         run: python -m pip install pillow
-      - name: Générer le logo officiel et les icônes
-        run: |
-          python - <<'PY'
-          import base64, io
-          from pathlib import Path
-          from PIL import Image
-
-          encoded = ''.join(Path('logo-officiel.txt').read_text(encoding='utf-8').split())
-          encoded += '=' * (-len(encoded) % 4)
-          raw = base64.b64decode(encoded, validate=False)
-          source = Image.open(io.BytesIO(raw)).convert('RGB')
-          source.save('logo-officiel.png', optimize=True)
-          for size in (180, 192, 512):
-              source.resize((size, size), Image.Resampling.LANCZOS).save(f'icon-{size}.png', optimize=True)
-          PY
+      - name: Générer le logo original et les icônes
+        run: >-
+          python -c "import base64,io,pathlib; from PIL import Image;
+          s=''.join(pathlib.Path('logo-officiel.txt').read_text(encoding='utf-8').split());
+          raw=base64.b64decode(s+'='*(-len(s)%4));
+          im=Image.open(io.BytesIO(raw)).convert('RGB');
+          im.save('logo-alexandra-lucas-original.png',optimize=True);
+          [(lambda c,sz: (c.paste(im.copy().resize((int(im.width*min(sz/im.width,sz/im.height)),int(im.height*min(sz/im.width,sz/im.height))),Image.Resampling.LANCZOS),((sz-int(im.width*min(sz/im.width,sz/im.height)))//2,(sz-int(im.height*min(sz/im.width,sz/im.height)))//2)),c.save(f'icon-{sz}.png',optimize=True)))(Image.new('RGB',(sz,sz),'white'),sz) for sz in (180,192,512)]"
       - name: Publier les fichiers générés
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add logo-officiel.png icon-180.png icon-192.png icon-512.png
-          git diff --cached --quiet || git commit -m "Générer le logo officiel et les icônes PWA"
+          git add logo-alexandra-lucas-original.png icon-180.png icon-192.png icon-512.png
+          git diff --cached --quiet || git commit -m "Générer le logo original Alexandra et Lucas"
           git pull --rebase
           git push
