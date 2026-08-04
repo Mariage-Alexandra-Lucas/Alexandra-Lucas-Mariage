@@ -1,72 +1,39 @@
 name: Compiler la passerelle Windows
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
       - 'gateway/**'
       - '.github/workflows/build-gateway.yml'
-  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  build-windows:
+  build:
     runs-on: windows-latest
     steps:
-      - name: Récupérer le dépôt
-        uses: actions/checkout@v4
-
-      - name: Installer Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
         with:
-          python-version: '3.12'
-
-      - name: Installer PyInstaller
-        run: python -m pip install --upgrade pip pyinstaller
-
-      - name: Compiler l'exécutable
-        shell: pwsh
-        run: |
-          pyinstaller --noconfirm --clean --onefile --windowed `
-            --name "Passerelle-Mariage-Alexandra-Lucas" `
-            gateway/mariage_gateway.py
-
+          dotnet-version: '8.0.x'
+      - name: Compiler l'exécutable autonome
+        run: dotnet publish gateway/MariageGateway.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o dist
       - name: Créer le pack ZIP
         shell: pwsh
         run: |
-          New-Item -ItemType Directory -Force -Path pack | Out-Null
-          Copy-Item dist/Passerelle-Mariage-Alexandra-Lucas.exe pack/
-          @'
-          PASSERELLE MARIAGE ALEXANDRA & LUCAS
-
-          1. Décompressez le ZIP dans un dossier permanent du PC passerelle.
-          2. Lancez Passerelle-Mariage-Alexandra-Lucas.exe.
-          3. Vérifiez le chemin NAS : \\192.168.1.131\Mariage_Alexandra_Lucas
-          4. Renseignez le mot de passe Alexandra/Lucas et le mot de passe DJ.
-          5. Cliquez sur Tester le NAS puis sur Démarrer.
-
-          L'application web est publiée à l'adresse :
-          https://alpesex.github.io/Alexandra-Lucas-Mariage/
-
-          Windows peut afficher un avertissement SmartScreen car l'exécutable n'est pas signé avec un certificat payant.
-          '@ | Set-Content -Encoding UTF8 pack/LISEZ-MOI.txt
-          Compress-Archive -Path pack/* -DestinationPath Passerelle-Mariage-Alexandra-Lucas-Windows.zip -Force
-
-      - name: Publier l'artefact
-        uses: actions/upload-artifact@v4
+          Copy-Item gateway/LISEZ-MOI.txt dist/LISEZ-MOI.txt
+          Compress-Archive -Path dist/* -DestinationPath Passerelle-Mariage-Alexandra-Lucas-Windows.zip -Force
+      - uses: actions/upload-artifact@v4
         with:
           name: Passerelle-Mariage-Alexandra-Lucas-Windows
           path: Passerelle-Mariage-Alexandra-Lucas-Windows.zip
-
       - name: Publier la version téléchargeable
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: gateway-v1.0.0
-          name: Passerelle Mariage Windows V1.0.0
-          body: |
-            Première version Windows de la passerelle du mariage d'Alexandra et Lucas.
-            Elle comprend une interface graphique, la configuration du NAS, l'heure serveur et l'authentification sécurisée.
+          tag_name: gateway-v1.2
+          name: Passerelle Mariage V1.2
           files: Passerelle-Mariage-Alexandra-Lucas-Windows.zip
           make_latest: true
