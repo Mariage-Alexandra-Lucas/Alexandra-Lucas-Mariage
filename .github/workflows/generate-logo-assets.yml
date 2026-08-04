@@ -25,7 +25,8 @@ jobs:
         run: >-
           python -c "import base64,io,pathlib; from PIL import Image;
           s=''.join(pathlib.Path('logo-officiel.txt').read_text(encoding='utf-8').split());
-          raw=base64.b64decode(s+'='*(-len(s)%4));
+          s=s[:-1] if len(s)%4==1 else s;
+          raw=base64.b64decode(s+'='*(-len(s)%4),validate=False);
           im=Image.open(io.BytesIO(raw)).convert('RGB');
           im.save('logo-alexandra-lucas-original.png',optimize=True);
           [(lambda c,sz: (c.paste(im.copy().resize((int(im.width*min(sz/im.width,sz/im.height)),int(im.height*min(sz/im.width,sz/im.height))),Image.Resampling.LANCZOS),((sz-int(im.width*min(sz/im.width,sz/im.height)))//2,(sz-int(im.height*min(sz/im.width,sz/im.height)))//2)),c.save(f'icon-{sz}.png',optimize=True)))(Image.new('RGB',(sz,sz),'white'),sz) for sz in (180,192,512)]"
