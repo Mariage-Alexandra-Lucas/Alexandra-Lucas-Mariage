@@ -75,7 +75,7 @@ class V22Handler(v2.V2Handler):
             self._json({"error": "Format d’envoi invalide."}, 400)
             return
         form = cgi.FieldStorage(fp=self.rfile, headers=self.headers, environ={"REQUEST_METHOD": "POST", "CONTENT_TYPE": content_type})
-        field = form["media"] if "media" in form else None
+        field = form["photo"] if "photo" in form else form["media"] if "media" in form else None
         if field is None or not getattr(field, "file", None):
             self._json({"error": "Aucun média reçu."}, 400)
             return
@@ -94,11 +94,27 @@ class V22Handler(v2.V2Handler):
         with target.open("wb") as output:
             shutil.copyfileobj(field.file, output)
         media_type = "video" if ext in {".mp4", ".mov", ".webm"} else "image"
+        comment = str(form.getfirst("comment", ""))[:180]
         try:
-            overlays = json.loads(str(form.getfirst("overlays", "[]")))
+            overlay = json.loads(str(form.getfirst("overlay", "{}")))
         except Exception:
-            overlays = []
-        meta = {"id": item_id, "owner": user["name"], "filename": filename, "createdAt": datetime.now().astimezone().isoformat(), "comment": "", "kind": "story", "mediaType": media_type, "overlays": overlays, "url": f"/api/media?kind=story&owner={quote(v2.safe(user['name']))}&file={quote(filename)}"}
+            overlay = {}
+        overlay = {
+            "text": str(overlay.get("text", ""))[:120],
+            "x": max(0, min(100, int(overlay.get("x", 50)))),
+            "y": max(0, min(100, int(overlay.get("y", 55)))),
+        }
+        meta = {
+            "id": item_id,
+            "owner": user["name"],
+            "filename": filename,
+            "createdAt": datetime.now().astimezone().isoformat(),
+            "comment": comment,
+            "kind": "story",
+            "mediaType": media_type,
+            "overlay": overlay,
+            "url": f"/api/media?kind=story&owner={quote(v2.safe(user['name']))}&file={quote(filename)}",
+        }
         (folder / f"{filename}.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
         gateway.log(f"{user['name']} a publié une story {media_type}: {filename}")
         self._json(meta, 201)
