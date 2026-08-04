@@ -23,27 +23,26 @@ jobs:
           python-version: '3.12'
       - name: Installer PyInstaller
         run: python -m pip install --upgrade pip pyinstaller
-      - name: Compiler la passerelle V2
+      - name: Compiler la passerelle V2.1
         shell: pwsh
         run: |
           pyinstaller --noconfirm --clean --onefile --windowed `
             --name "Passerelle-Mariage-Alexandra-Lucas" `
             --paths gateway `
-            gateway/mariage_gateway_v2.py
+            gateway/mariage_gateway_v21.py
       - name: Créer le pack ZIP
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path pack | Out-Null
           Copy-Item dist/Passerelle-Mariage-Alexandra-Lucas.exe pack/
           @'
-          PASSERELLE MARIAGE ALEXANDRA & LUCAS — V2.0
+          PASSERELLE MARIAGE ALEXANDRA & LUCAS — V2.1
 
           Nouveautés :
-          - dépôt des photos privées ;
-          - publication et consultation des stories ;
-          - accès Super Admin à toutes les photos ;
-          - classement par date et heure ;
-          - fonctionnement simultané avec la passerelle ERP ASM.
+          - dépôt et consultation plein écran des photos ;
+          - stories enrichies avec texte, stickers et effets ;
+          - suppression des stories de l'application ;
+          - archivage permanent des stories supprimées sur le NAS.
 
           Port : 8788
           NAS : X:\Mariage_Alexandra_Lucas
@@ -54,14 +53,14 @@ jobs:
       - name: Publier l'artefact
         uses: actions/upload-artifact@v4
         with:
-          name: Passerelle-Mariage-Alexandra-Lucas-Windows-V2
+          name: Passerelle-Mariage-Alexandra-Lucas-Windows-V2.1
           path: Passerelle-Mariage-Alexandra-Lucas-Windows.zip
       - name: Publier la version téléchargeable
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: gateway-v2.0
-          name: Passerelle Mariage Windows V2.0
+          tag_name: gateway-v2.1
+          name: Passerelle Mariage Windows V2.1
           body: |
-            V2 complète : photos privées, stories partagées et vue Super Admin.
+            Photos avec prévisualisation, stories enrichies et suppression avec archivage NAS.
           files: Passerelle-Mariage-Alexandra-Lucas-Windows.zip
           make_latest: true
