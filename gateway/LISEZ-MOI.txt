@@ -1,0 +1,29 @@
+PASSERELLE MARIAGE ALEXANDRA & LUCAS — V1.2
+
+Chemin NAS préconfiguré :
+X:\Mariage_Alexandra_Lucas
+
+Fonctions :
+- interface graphique mariage ;
+- test réel de lecture/écriture sur le NAS ;
+- création automatique de l’arborescence ;
+- démarrage/arrêt de la passerelle ;
+- ouverture du dossier NAS ;
+- ouverture de l’application web ;
+- réduction dans la zone de notification ;
+- démarrage automatique avec Windows ;
+- heure officielle fournie par le PC passerelle.
+
+Premier lancement :
+1. Vérifiez que le lecteur X: est connecté dans l’Explorateur Windows.
+2. Lancez Passerelle-Mariage-Alexandra-Lucas.exe.
+3. Saisissez les mots de passe Alexandra/Lucas et DJ.
+4. Cliquez sur Enregistrer.
+5. Cliquez sur Tester le NAS.
+6. Cliquez sur Démarrer la passerelle.
+
+Si Windows affiche SmartScreen :
+Informations complémentaires > Exécuter quand même.
+
+Application web :
+https://alpesex.github.io/Alexandra-Lucas-Mariage/
