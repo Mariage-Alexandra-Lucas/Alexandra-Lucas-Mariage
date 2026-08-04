@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import cgi
 import json
-import mimetypes
 import shutil
 import threading
 import uuid
@@ -44,9 +43,7 @@ def archive_item(config: dict, kind: str, item_id: str, user: dict) -> bool:
         shutil.move(str(media), str(archive / f"{stamp}-{media.name}"))
     meta["deletedAt"] = datetime.now().astimezone().isoformat()
     meta["deletedBy"] = user.get("name")
-    (archive / f"{stamp}-{meta_file.name}").write_text(
-        json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
+    (archive / f"{stamp}-{meta_file.name}").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
     meta_file.unlink(missing_ok=True)
     gateway.log(f"{kind} {item_id} archivé par {user.get('name')}")
     return True
@@ -77,12 +74,8 @@ class V22Handler(v2.V2Handler):
         if "multipart/form-data" not in content_type:
             self._json({"error": "Format d’envoi invalide."}, 400)
             return
-        form = cgi.FieldStorage(
-            fp=self.rfile,
-            headers=self.headers,
-            environ={"REQUEST_METHOD": "POST", "CONTENT_TYPE": content_type},
-        )
-        field = form["photo"] if "photo" in form else None
+        form = cgi.FieldStorage(fp=self.rfile, headers=self.headers, environ={"REQUEST_METHOD": "POST", "CONTENT_TYPE": content_type})
+        field = form["media"] if "media" in form else None
         if field is None or not getattr(field, "file", None):
             self._json({"error": "Aucun média reçu."}, 400)
             return
@@ -101,20 +94,12 @@ class V22Handler(v2.V2Handler):
         with target.open("wb") as output:
             shutil.copyfileobj(field.file, output)
         media_type = "video" if ext in {".mp4", ".mov", ".webm"} else "image"
-        comment = str(form.getfirst("comment", ""))[:180]
-        meta = {
-            "id": item_id,
-            "owner": user["name"],
-            "filename": filename,
-            "createdAt": datetime.now().astimezone().isoformat(),
-            "comment": comment,
-            "kind": "story",
-            "mediaType": media_type,
-            "url": f"/api/media?kind=story&owner={quote(v2.safe(user['name']))}&file={quote(filename)}",
-        }
-        (folder / f"{filename}.json").write_text(
-            json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8"
-        )
+        try:
+            overlays = json.loads(str(form.getfirst("overlays", "[]")))
+        except Exception:
+            overlays = []
+        meta = {"id": item_id, "owner": user["name"], "filename": filename, "createdAt": datetime.now().astimezone().isoformat(), "comment": "", "kind": "story", "mediaType": media_type, "overlays": overlays, "url": f"/api/media?kind=story&owner={quote(v2.safe(user['name']))}&file={quote(filename)}"}
+        (folder / f"{filename}.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
         gateway.log(f"{user['name']} a publié une story {media_type}: {filename}")
         self._json(meta, 201)
 
