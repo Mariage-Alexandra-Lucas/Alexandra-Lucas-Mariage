@@ -26,13 +26,13 @@ jobs:
       - name: Installer PyInstaller
         run: python -m pip install --upgrade pip pyinstaller
 
-      - name: Compiler l'exécutable V1.4
+      - name: Compiler l'exécutable V1.5
         shell: pwsh
         run: |
           pyinstaller --noconfirm --clean --onefile --windowed `
             --name "Passerelle-Mariage-Alexandra-Lucas" `
             --paths gateway `
-            gateway/mariage_gateway_v14.py
+            gateway/mariage_gateway_v15.py
 
       - name: Créer le pack ZIP
         shell: pwsh
@@ -40,46 +40,43 @@ jobs:
           New-Item -ItemType Directory -Force -Path pack | Out-Null
           Copy-Item dist/Passerelle-Mariage-Alexandra-Lucas.exe pack/
           @'
-          PASSERELLE MARIAGE ALEXANDRA & LUCAS — V1.4
+          PASSERELLE MARIAGE ALEXANDRA & LUCAS — V1.5
 
-          Cette version peut fonctionner en même temps que la passerelle ERP ASM.
+          Corrections :
+          - port mariage 8788, compatible avec ERP ASM sur 8787 ;
+          - fonctionnement sans mode administrateur ;
+          - accès au NAS X:\Mariage_Alexandra_Lucas ;
+          - correction CORS pour l'application GitHub Pages ;
+          - migration automatique de l'ancienne configuration.
 
-          Ports :
-          - ERP ASM : 8787
-          - Mariage : 8788
-
-          La passerelle mariage doit être lancée normalement, sans mode administrateur,
-          afin de conserver l'accès au lecteur réseau :
-          X:\Mariage_Alexandra_Lucas
+          L'application doit maintenant pouvoir se connecter depuis :
+          https://alpesex.github.io/Alexandra-Lucas-Mariage/
 
           Étapes :
           1. Fermez l'ancienne passerelle mariage.
-          2. Vérifiez que X: est visible dans l'Explorateur Windows.
-          3. Lancez normalement Passerelle-Mariage-Alexandra-Lucas.exe.
-          4. Cliquez sur Tester le NAS.
-          5. Cliquez sur Démarrer.
+          2. Lancez normalement le nouvel exécutable.
+          3. Vérifiez les mots de passe puis cliquez sur Enregistrer.
+          4. Cliquez sur Tester le NAS puis Démarrer.
+          5. Rechargez complètement l'application web.
 
           Test local :
           http://127.0.0.1:8788/api/health
-
-          Application web :
-          https://alpesex.github.io/Alexandra-Lucas-Mariage/
           '@ | Set-Content -Encoding UTF8 pack/LISEZ-MOI.txt
           Compress-Archive -Path pack/* -DestinationPath Passerelle-Mariage-Alexandra-Lucas-Windows.zip -Force
 
       - name: Publier l'artefact
         uses: actions/upload-artifact@v4
         with:
-          name: Passerelle-Mariage-Alexandra-Lucas-Windows-V1.4
+          name: Passerelle-Mariage-Alexandra-Lucas-Windows-V1.5
           path: Passerelle-Mariage-Alexandra-Lucas-Windows.zip
 
       - name: Publier la version téléchargeable
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: gateway-v1.4
-          name: Passerelle Mariage Windows V1.4
+          tag_name: gateway-v1.5
+          name: Passerelle Mariage Windows V1.5
           body: |
-            Correction du conflit avec la passerelle ERP ASM.
-            La passerelle mariage utilise désormais le port 8788 et fonctionne sans élévation administrateur.
+            Correction du message « Load failed » provoqué par une origine CORS incorrecte.
+            L'origine autorisée est désormais https://alpesex.github.io.
           files: Passerelle-Mariage-Alexandra-Lucas-Windows.zip
           make_latest: true
