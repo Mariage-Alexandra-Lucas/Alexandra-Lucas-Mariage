@@ -1,0 +1,14 @@
+{
+  "name": "Mariage d’Alexandra et Lucas",
+  "short_name": "A & L",
+  "description": "Application privée du mariage d’Alexandra et Lucas",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8f3ef",
+  "theme_color": "#b87968",
+  "icons": [
+    {"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
