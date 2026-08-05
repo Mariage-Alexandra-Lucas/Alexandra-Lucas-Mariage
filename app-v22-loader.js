@@ -1,19 +1,26 @@
-(async()=>{
-  try{
-    const encoded=await fetch('./app-v22.payload?v=2.4',{cache:'no-store'}).then(r=>r.text());
-    const bytes=Uint8Array.from(atob(encoded.trim()),c=>c.charCodeAt(0));
-    const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
-    let source=await new Response(stream).text();
-    const logo='./logo.svg?v=2.1-restore';
-    source=source.replaceAll('./logo-officiel.webp',logo);
-    source=source.replaceAll('./logo-officiel.png?v=2.3',logo);
-    source=source.replaceAll('./logo-mariage-v24.svg?v=2.4',logo);
-    source=source.replaceAll('./logo-v27.jpg?v=2.7',logo);
-    source=source.replaceAll('./logo-al.svg',logo);
-    source=source.replaceAll('./logo.svg',logo);
-    (0,eval)(source);
-  }catch(error){
-    console.error(error);
-    document.querySelector('#app').innerHTML='<main style="padding:32px;font-family:sans-serif"><h1>Application indisponible</h1><p>Rechargez la page dans quelques instants.</p></main>';
-  }
+(()=>{
+  const nativeFetch=window.fetch.bind(window);
+  window.fetch=(input,init={})=>{
+    let url=typeof input==='string'?input:input.url;
+    const options={...init};
+    const headers=new Headers(options.headers||{});
+    const apiBase=(window.MARIAGE_CONFIG?.apiUrl||'').replace(/\/$/,'');
+    if(apiBase && url.startsWith(apiBase)){
+      const auth=headers.get('Authorization');
+      if(auth && auth.startsWith('Bearer ')){
+        const token=auth.slice(7);
+        headers.delete('Authorization');
+        const target=new URL(url);
+        if(!target.searchParams.has('token'))target.searchParams.set('token',token);
+        url=target.toString();
+      }
+      if(options.body && !(options.body instanceof FormData)){
+        headers.set('Content-Type','text/plain;charset=UTF-8');
+      }
+      options.mode='cors';
+      options.cache='no-store';
+    }
+    options.headers=headers;
+    return nativeFetch(url,options);
+  };
 })();
