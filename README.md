@@ -61,3 +61,8 @@ Les QR codes Guadeloupe, Île Maurice, Maldives et Mexique peuvent être scanné
 - compte à rebours et étapes de la journée entièrement automatiques ;
 - mini-film souvenir personnel disponible le dimanche ;
 - correction des icônes de la barre de navigation.
+
+### Correctif passerelle 2.6.1
+
+La passerelle utilise l'heure officielle du PC Windows sans dépendre de la base
+Python `tzdata`, absente de certains exécutables autonomes.

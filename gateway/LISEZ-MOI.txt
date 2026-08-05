@@ -1,4 +1,4 @@
-PASSERELLE MARIAGE ALEXANDRA & LUCAS — V2.6
+PASSERELLE MARIAGE ALEXANDRA & LUCAS — V2.6.1
 
 Chemin NAS préconfiguré :
 X:\Mariage_Alexandra_Lucas
@@ -12,7 +12,7 @@ Fonctions :
 - ouverture de l’application web ;
 - réduction dans la zone de notification ;
 - démarrage automatique avec Windows ;
-- heure officielle fournie par le PC passerelle.
+- heure officielle fournie par le PC passerelle, sans dépendance tzdata.
 
 Premier lancement :
 1. Vérifiez que le lecteur X: est connecté dans l’Explorateur Windows.

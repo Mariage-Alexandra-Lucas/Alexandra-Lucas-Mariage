@@ -4,10 +4,9 @@ import cgi
 import json
 import threading
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from tkinter import messagebox
 from urllib.parse import urlparse
-from zoneinfo import ZoneInfo
 
 import mariage_gateway as gateway
 import mariage_gateway_v2 as v2
@@ -15,9 +14,9 @@ import mariage_gateway_v24 as v24
 import mariage_gateway_v25 as v25
 
 gateway.PORT = 8788
-gateway.VERSION = "2.6.0"
+gateway.VERSION = "2.6.1"
 WEB_ORIGIN = "https://mariage-alexandra-lucas.github.io"
-PARIS = ZoneInfo("Europe/Paris")
+PARIS = timezone(timedelta(hours=2), "Europe/Paris")
 PAIR_AT = datetime(2026, 8, 29, 15, 0, tzinfo=PARIS)
 TEAM_AT = datetime(2026, 8, 29, 15, 45, tzinfo=PARIS)
 TABLE_GAMES_AT = datetime(2026, 8, 29, 18, 0, tzinfo=PARIS)
@@ -25,7 +24,9 @@ GROUP_LOCK = threading.RLock()
 
 
 def event_now() -> datetime:
-    return datetime.now(PARIS)
+    # L'heure officielle est celle du PC passerelle. astimezone() utilise
+    # directement le fuseau configuré dans Windows et ne dépend pas de tzdata.
+    return datetime.now().astimezone()
 
 
 def default_groups() -> dict:
@@ -106,7 +107,7 @@ def events_payload(config: dict, user: dict) -> dict:
 
 
 class V26Handler(v25.V25Handler):
-    server_version = "MariageGateway/2.6"
+    server_version = "MariageGateway/2.6.1"
 
     def do_GET(self):
         route = urlparse(self.path).path
@@ -181,8 +182,8 @@ def start_v26(self):
         v24.ensure_v24_tree(self.config)
         self.server = gateway.GatewayServer(("127.0.0.1", gateway.PORT), V26Handler, self.config)
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True); self.thread.start()
-        self.status.config(text="● Passerelle V2.6 active — port 8788", fg="#74d3ae")
-        gateway.log("Passerelle mariage V2.6 démarrée sur 127.0.0.1:8788")
+        self.status.config(text="● Passerelle V2.6.1 active — port 8788", fg="#74d3ae")
+        gateway.log("Passerelle mariage V2.6.1 démarrée sur 127.0.0.1:8788")
     except Exception as exc:
         self.server = None; messagebox.showerror(gateway.APP_NAME, f"Démarrage impossible :\n{exc}")
 
