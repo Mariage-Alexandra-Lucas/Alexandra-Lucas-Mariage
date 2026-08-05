@@ -1,0 +1,15 @@
+.admin-console-head{text-align:center;background:linear-gradient(145deg,#fff8e9,#fff)}
+.admin-console-head h2{font-family:Georgia,serif}
+.admin-other{margin:14px 0 110px;border:1px solid var(--line);border-radius:18px;background:#fff}
+.admin-other>summary{cursor:pointer;padding:17px;font-weight:800;color:#8b6420}
+.admin-other>section{margin:12px}
+.dj-only{padding-bottom:30px}
+.dj-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.dj-header span,.dj-header strong{display:block}
+.dj-header strong{font-family:Georgia,serif;font-size:1.5rem}
+.dj-header .btn{width:auto;margin:0}
+.launch-quiz{margin-bottom:12px}
+.answer-correction{display:grid;grid-template-columns:1fr auto;gap:8px}
+.answer-correction .field{margin:0}
+.vote-progress{text-align:center;font-weight:800;color:#8b6420}
+@media(max-width:560px){.dj-header{align-items:flex-start}.dj-header .btn{padding:10px}}

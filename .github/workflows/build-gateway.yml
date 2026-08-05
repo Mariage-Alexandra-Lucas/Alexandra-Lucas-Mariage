@@ -23,7 +23,7 @@ jobs:
           python-version: '3.12'
       - name: Installer PyInstaller
         run: python -m pip install --upgrade pip pyinstaller
-      - name: Compiler la passerelle V2.6.1
+      - name: Compiler la passerelle V2.7
         shell: pwsh
         run: |
           pyinstaller --noconfirm --clean --onefile --windowed `
@@ -36,7 +36,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path pack | Out-Null
           Copy-Item dist/Passerelle-Mariage-Alexandra-Lucas.exe pack/
           @'
-          PASSERELLE MARIAGE ALEXANDRA & LUCAS — V2.6.1
+          PASSERELLE MARIAGE ALEXANDRA & LUCAS — V2.7
 
           Nouveautés :
           - annonces et programme en direct ;
@@ -50,6 +50,8 @@ jobs:
           - configuration manuelle des binômes et équipes ;
           - film souvenir et sélection multiple des participants ;
           - correction du démarrage Windows sans dépendance tzdata ;
+          - page DJ exclusive pour l'animation Elle ou Lui ;
+          - console Super Admin séparée pour les questions et les groupes ;
           - stories photo et vidéo ;
           - texte et autocollants déplaçables après capture ;
           - suppression logique des photos et stories ;
@@ -65,14 +67,14 @@ jobs:
       - name: Publier l'artefact
         uses: actions/upload-artifact@v4
         with:
-          name: Passerelle-Mariage-Alexandra-Lucas-Windows-V2.6.1
+          name: Passerelle-Mariage-Alexandra-Lucas-Windows-V2.7
           path: Passerelle-Mariage-Alexandra-Lucas-Windows.zip
       - name: Publier la version téléchargeable
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: gateway-v2.6.1
-          name: Passerelle Mariage Windows V2.6.1
+          tag_name: gateway-v2.7
+          name: Passerelle Mariage Windows V2.7
           body: |
-            Correction du démarrage Windows : heure officielle fournie par le PC passerelle, sans dépendance tzdata.
+            Page DJ exclusive, console Super Admin séparée et configuration corrigée des questions, binômes et équipes.
           files: Passerelle-Mariage-Alexandra-Lucas-Windows.zip
           make_latest: true

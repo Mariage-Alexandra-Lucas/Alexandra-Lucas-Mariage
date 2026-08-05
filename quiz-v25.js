@@ -2,7 +2,7 @@
   const previousRefresh=refresh, previousGameView=gameView, previousProfileView=profileView, previousShell=shell;
   state.quiz={currentIndex:-1,current:null,scores:{},questions:[],tables:['Guadeloupe','Île Maurice','Maldives','Mexique']};
   let quizTimer=null, quizSignature='';
-  const controller=()=>state.user?.role==='dj'||(state.user?.role==='superadmin'&&state.adminView);
+  const controller=()=>state.user?.role==='dj';
   const quizEsc=value=>esc(value||'');
 
   async function loadQuiz(){
@@ -28,7 +28,7 @@
   function controlPanel(){
     const q=state.quiz.current,responses=q?.responses||{};
     const options=(state.quiz.questions||[]).map((item,index)=>`<option value="${index}" ${state.quiz.currentIndex===index?'selected':''}>${index+1}. ${quizEsc(item.text||'Question non configurée')}</option>`).join('');
-    return `<section class="card quiz-control"><div class="section-title">Console DJ</div><h2>Animation Elle ou Lui</h2><select class="field" id="quiz-question-select">${options}</select><div class="control-buttons"><button class="btn" data-quiz-control="start">Lancer la question</button><button class="btn secondary" data-quiz-control="close" ${!q||q.status!=='open'?'disabled':''}>Clôturer</button><button class="btn secondary" data-quiz-control="reveal" ${!q||q.status==='revealed'?'disabled':''}>Révéler</button></div>${q?`<div class="dj-question"><span>Question ${q.number}/15 — ${quizEsc(q.status)}</span><h3>${quizEsc(q.text)}</h3><p>Bonne réponse : <b>${q.correctAnswer==='elle'?'Elle':'Lui'}</b></p></div><div class="table-responses">${(state.quiz.tables||[]).map(table=>`<div><span>${quizEsc(table)}</span><b>${responses[table]?.answer?responses[table].answer==='elle'?'Elle':'Lui':'—'}</b><small>${responses[table]?.updatedBy?quizEsc(responses[table].updatedBy):'En attente'}</small></div>`).join('')}</div>`:'<p>Choisissez une question pour commencer.</p>'}${scoreBoard(state.user.role==='superadmin')}</section>`;
+    return `<section class="card quiz-control"><div class="section-title">Console DJ</div><h2>Animation Elle ou Lui</h2><button class="btn launch-quiz" data-quiz-control="launch">Lancer le jeu</button><select class="field" id="quiz-question-select">${options}</select><div class="control-buttons"><button class="btn" data-quiz-control="start">Lancer la question</button><button class="btn secondary" data-quiz-control="close" ${!q||q.status!=='open'?'disabled':''}>Clôturer le vote et afficher la réponse</button></div>${q?`<div class="dj-question"><span>Question ${q.number}/15 — ${quizEsc(q.status)}</span><h3>${quizEsc(q.text)}</h3><form id="correct-answer-form"><label>Bonne réponse</label><div class="answer-correction"><select class="field" name="answer"><option value="elle" ${q.correctAnswer==='elle'?'selected':''}>Elle</option><option value="lui" ${q.correctAnswer==='lui'?'selected':''}>Lui</option></select><button class="btn secondary">Corriger</button></div></form></div><p class="vote-progress">${Object.keys(responses).length}/4 tables ont répondu</p>`:'<p>Le jeu est prêt. Lancez-le, puis choisissez la première question.</p>'}${scoreBoard(false)}</section>`;
   }
 
   function quizEditor(){
@@ -51,10 +51,19 @@
     app.querySelectorAll('[data-quiz-answer]').forEach(button=>button.onclick=async()=>{try{state.quiz=await api('/api/v25/quiz/answer',{method:'POST',body:JSON.stringify({answer:button.dataset.quizAnswer})});render();toast(`Réponse commune de ${state.user.table} mise à jour`)}catch(e){toast(e.message)}});
     app.querySelectorAll('[data-quiz-control]').forEach(button=>button.onclick=()=>quizControl(button.dataset.quizControl).catch(e=>toast(e.message)));
     app.querySelectorAll('[data-score-table]').forEach(button=>button.onclick=async()=>{state.quiz=await api('/api/v25/quiz/score',{method:'POST',body:JSON.stringify({table:button.dataset.scoreTable,delta:Number(button.dataset.delta)})});render()});
+    app.querySelector('#correct-answer-form')?.addEventListener('submit',async event=>{event.preventDefault();try{state.quiz=await api('/api/v25/quiz/control',{method:'POST',body:JSON.stringify({action:'correct',answer:new FormData(event.target).get('answer')})});render();toast('Bonne réponse corrigée')}catch(e){toast(e.message)}});
     app.querySelector('#quiz-config-form')?.addEventListener('submit',async event=>{event.preventDefault();const form=new FormData(event.target),questions=Array.from({length:15},(_,i)=>({text:form.get(`question-${i}`),answer:form.get(`answer-${i}`)}));try{state.quiz=await api('/api/v25/quiz/config',{method:'POST',body:JSON.stringify({questions})});render();toast('Les 15 questions sont enregistrées')}catch(e){toast(e.message)}});
     app.querySelector('#reset-quiz')?.addEventListener('click',async()=>{if(!confirm('Effacer toutes les réponses et remettre les scores à zéro ?'))return;state.quiz=await api('/api/v25/quiz/control',{method:'POST',body:JSON.stringify({action:'reset'})});render();toast('Quiz remis à zéro')});
   }
-  shell=function(){previousShell();bindQuiz();clearInterval(quizTimer);if(state.tab==='game'){quizSignature=JSON.stringify(state.quiz);quizTimer=setInterval(async()=>{const next=await api('/api/v25/quiz').catch(()=>null);if(next&&JSON.stringify(next)!==quizSignature){state.quiz=next;quizSignature=JSON.stringify(next);render()}},3000)}};
+  function startPolling(){clearInterval(quizTimer);quizSignature=JSON.stringify(state.quiz);quizTimer=setInterval(async()=>{const next=await api('/api/v25/quiz').catch(()=>null);if(next&&JSON.stringify(next)!==quizSignature){state.quiz=next;quizSignature=JSON.stringify(next);render()}},3000)}
+  shell=function(){
+    if(state.user?.role==='dj'){
+      app.innerHTML=`<main class="shell dj-only"><header class="dj-header"><div><span>Animation</span><strong>Elle ou Lui</strong></div><button class="btn secondary" id="logout">Se déconnecter</button></header>${controlPanel()}</main>`;
+      app.querySelector('#logout').onclick=logout;bindQuiz();startPolling();return;
+    }
+    previousShell();bindQuiz();clearInterval(quizTimer);if(state.tab==='game')startPolling();
+  };
+  window.MARIAGE_QUIZ_V25={editor:quizEditor,bind:bindQuiz};
   window.addEventListener('beforeunload',()=>clearInterval(quizTimer));
   if(state.user)loadQuiz().finally(render);
 })();

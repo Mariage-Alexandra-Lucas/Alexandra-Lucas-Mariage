@@ -14,8 +14,8 @@
   refresh=async function(){await previousRefresh();await loadEvents()};
   const now=()=>new Date(Date.now()+clockOffset);
   const at=value=>new Date(value);
-  const guestOptions=(selected='')=>(state.events.guests||[]).map(name=>`<option value="${esc(name)}" ${name===selected?'selected':''}>${esc(name)}</option>`).join('');
-  const pairOptions=(selected='')=>(state.events.pairs||[]).map(pair=>`<option value="${esc(pair.name)}" ${pair.name===selected?'selected':''}>${esc(pair.name)}</option>`).join('');
+  const guestOptions=(selected='')=>`<option value="" ${!selected?'selected':''}>Choisir une personne</option>`+(state.events.guests||[]).map(name=>`<option value="${esc(name)}" ${name===selected?'selected':''}>${esc(name)}</option>`).join('');
+  const pairOptions=(selected='')=>`<option value="" ${!selected?'selected':''}>Choisir un binôme</option>`+(state.events.pairs||[]).map(pair=>`<option value="${esc(pair.name)}" ${pair.name===selected?'selected':''}>${esc(pair.name)}</option>`).join('');
 
   function automaticMoment(){
     const current=now(),day=at('2026-08-29T00:00:00+02:00'),eight=at('2026-08-29T08:00:00+02:00'),fifteen=at('2026-08-29T15:00:00+02:00'),church=at('2026-08-29T15:45:00+02:00'),churchEnd=at('2026-08-29T17:30:00+02:00'),dinner=at('2026-08-29T18:00:00+02:00'),finish=at('2026-08-30T02:00:00+02:00');
@@ -43,7 +43,15 @@
   function pairRow(pair={name:'',members:['','']}){return `<div class="group-row pair-row"><input class="field pair-name" placeholder="Nom du binôme" value="${esc(pair.name)}"><select class="field pair-member">${guestOptions(pair.members?.[0])}</select><select class="field pair-member">${guestOptions(pair.members?.[1])}</select><button class="remove-group" type="button">×</button></div>`}
   function teamRow(team={name:'',pairs:['','']}){return `<div class="group-row team-row"><input class="field team-name" placeholder="Nom de l’équipe (facultatif)" value="${esc(team.name)}"><select class="field team-pair">${pairOptions(team.pairs?.[0])}</select><select class="field team-pair">${pairOptions(team.pairs?.[1])}</select><button class="remove-group" type="button">×</button></div>`}
   function souvenirFilm(){const available=now()>=at('2026-08-30T08:00:00+02:00'),photos=(state.photos||[]).filter(x=>(x.mediaType||'image')==='image').slice(0,8);if(!available)return '';return `<section class="card souvenir-film"><div class="section-title">Votre film souvenir</div><h2>Votre mariage en quelques secondes</h2>${photos.length?`<div class="film-cover"><div>${photos.map((p,i)=>`<img src="${mediaUrl(p)}" data-film-image="${i}" class="${i===0?'active':''}">`).join('')}<p id="film-caption">Votre journée commence ici…</p></div><button class="btn" id="play-film">▶ Voir mon mini-film</button></div>`:'<p>Ajoutez quelques photos pour générer automatiquement votre mini-film souvenir.</p>'}</section>`}
-  profileView=function(){let html=previousProfileView();html=html.replace(/<section class="card"><div class="section-title">Préparation des binômes<\/div>.*?<\/section>/,'');return `${html}${manualGroups()}${souvenirFilm()}`};
+  profileView=function(){
+    let html=previousProfileView();
+    html=html.replace(/<section class="card"><div class="section-title">Préparation des binômes<\/div>.*?<\/section>/,'');
+    if(state.user?.role==='superadmin'&&state.adminView){
+      html=html.replace(/<section class="card quiz-editor">.*?<\/section>/,'');
+      return `<section class="card admin-console-head"><div class="section-title">Configuration Super Admin</div><h2>Préparation des animations</h2><p>Cette console est réservée à Alexandra et Lucas. Elle est indépendante de la page du DJ.</p></section>${window.MARIAGE_QUIZ_V25?.editor?.()||''}${manualGroups()}<details class="admin-other"><summary>Autres outils Super Admin</summary>${html}</details>`;
+    }
+    return `${html}${souvenirFilm()}`;
+  };
 
   function participantPicker(title){return `<div class="participant-picker"><label>${title}</label><div class="participant-add"><select class="field person-select"><option value="">Choisir un prénom</option>${guestOptions()}</select><button type="button" class="mini-btn add-person">Ajouter</button></div><div class="selected-people"></div><input type="hidden" name="participants"></div>`}
   function bindParticipantPicker(root){root.querySelectorAll('.participant-picker').forEach(picker=>{const select=picker.querySelector('.person-select'),list=picker.querySelector('.selected-people'),hidden=picker.querySelector('[name=participants]'),people=[];picker.querySelector('.add-person').onclick=()=>{if(!select.value||people.includes(select.value))return;people.push(select.value);draw()};function draw(){hidden.value=people.join('|');list.innerHTML=people.map((name,i)=>`<button type="button" data-remove-person="${i}">${esc(name)} ×</button>`).join('');list.querySelectorAll('button').forEach(b=>b.onclick=()=>{people.splice(Number(b.dataset.removePerson),1);draw()})}})}
@@ -60,6 +68,6 @@
     app.querySelector('#play-film')?.addEventListener('click',()=>{clearInterval(filmTimer);const images=[...app.querySelectorAll('[data-film-image]')],captions=['Votre journée commence ici…','Les premiers sourires','Des rencontres inoubliables','Tous réunis pour vous','Des éclats de rire','Une soirée pleine d’émotion','Vos plus beaux souvenirs','Merci pour cette merveilleuse journée'];let index=0;images.forEach((x,i)=>x.classList.toggle('active',i===0));app.querySelector('#film-caption').textContent=captions[0];filmTimer=setInterval(()=>{images[index].classList.remove('active');index=(index+1)%images.length;images[index].classList.add('active');app.querySelector('#film-caption').textContent=captions[index%captions.length];if(index===images.length-1)setTimeout(()=>clearInterval(filmTimer),2300)},2300)});
   }
   function fixIcons(){['home','table','photos','live','game','profile'].forEach(id=>{const target=app.querySelector(`[data-tab="${id}"] .nav-icon`);if(target)target.innerHTML=icons[id]})}
-  shell=function(){previousShell();bindEvents();fixIcons();clearInterval(clockTimer);if(state.tab==='home')clockTimer=setInterval(()=>render(),60000)};
+  shell=function(){previousShell();bindEvents();fixIcons();window.MARIAGE_QUIZ_V25?.bind?.();if(state.user?.role==='superadmin'&&state.adminView){const profile=app.querySelector('[data-tab="profile"]');if(profile){profile.querySelector('.nav-label').textContent='Configuration';profile.setAttribute('aria-label','Configuration Super Admin')}}clearInterval(clockTimer);if(state.tab==='home')clockTimer=setInterval(()=>render(),60000)};
   if(state.user)loadEvents().finally(render);
 })();

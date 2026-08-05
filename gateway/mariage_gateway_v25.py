@@ -135,7 +135,14 @@ class V25Handler(v24.V24Handler):
                 if role not in {"superadmin", "dj"}:
                     self._json({"error": "Commande réservée au DJ et aux mariés."}, 403); return
                 action = str(data.get("action", ""))
-                if action == "start":
+                if action == "launch":
+                    for question in quiz["questions"]:
+                        question["status"] = "idle"
+                        question["responses"] = {}
+                    quiz["current"] = -1
+                    quiz["adjustments"] = {table: 0 for table in TABLES}
+                    quiz["startedAt"] = v24.now()
+                elif action == "start":
                     index = int(data.get("index", 0))
                     if not 0 <= index < 15 or not quiz["questions"][index].get("text"):
                         self._json({"error": "Question non configurée."}, 400); return
@@ -144,7 +151,15 @@ class V25Handler(v24.V24Handler):
                     index = int(quiz.get("current", -1))
                     if not 0 <= index < 15:
                         self._json({"error": "Aucune question active."}, 400); return
-                    quiz["questions"][index]["status"] = "closed" if action == "close" else "revealed"
+                    quiz["questions"][index]["status"] = "revealed"
+                elif action == "correct":
+                    index = int(quiz.get("current", -1))
+                    answer = str(data.get("answer", "")).lower()
+                    if not 0 <= index < 15:
+                        self._json({"error": "Aucune question active."}, 400); return
+                    if answer not in {"elle", "lui"}:
+                        self._json({"error": "Choisissez Elle ou Lui."}, 400); return
+                    quiz["questions"][index]["answer"] = answer
                 elif action == "reset":
                     if role != "superadmin":
                         self._json({"error": "Réinitialisation réservée au Super Admin."}, 403); return

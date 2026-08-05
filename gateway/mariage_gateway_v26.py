@@ -14,7 +14,7 @@ import mariage_gateway_v24 as v24
 import mariage_gateway_v25 as v25
 
 gateway.PORT = 8788
-gateway.VERSION = "2.6.1"
+gateway.VERSION = "2.7.0"
 WEB_ORIGIN = "https://mariage-alexandra-lucas.github.io"
 PARIS = timezone(timedelta(hours=2), "Europe/Paris")
 PAIR_AT = datetime(2026, 8, 29, 15, 0, tzinfo=PARIS)
@@ -107,10 +107,18 @@ def events_payload(config: dict, user: dict) -> dict:
 
 
 class V26Handler(v25.V25Handler):
-    server_version = "MariageGateway/2.6.1"
+    server_version = "MariageGateway/2.7"
+
+    def _dj_route_allowed(self, route: str) -> bool:
+        user = self._user_any()
+        if user and user.get("role") == "dj" and not (route == "/api/v25/quiz" or route.startswith("/api/v25/quiz/")):
+            self._json({"error": "Le compte DJ est limité à l’animation Elle ou Lui."}, 403)
+            return False
+        return True
 
     def do_GET(self):
         route = urlparse(self.path).path
+        if not self._dj_route_allowed(route): return
         if route != "/api/v26/events":
             super().do_GET(); return
         user = self._user_required()
@@ -120,6 +128,7 @@ class V26Handler(v25.V25Handler):
 
     def do_POST(self):
         route = urlparse(self.path).path
+        if not self._dj_route_allowed(route): return
         now = event_now()
         if route == "/api/v24/unlock" and now < TABLE_GAMES_AT:
             if not self._user_required(): return
@@ -182,8 +191,8 @@ def start_v26(self):
         v24.ensure_v24_tree(self.config)
         self.server = gateway.GatewayServer(("127.0.0.1", gateway.PORT), V26Handler, self.config)
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True); self.thread.start()
-        self.status.config(text="● Passerelle V2.6.1 active — port 8788", fg="#74d3ae")
-        gateway.log("Passerelle mariage V2.6.1 démarrée sur 127.0.0.1:8788")
+        self.status.config(text="● Passerelle V2.7 active — port 8788", fg="#74d3ae")
+        gateway.log("Passerelle mariage V2.7 démarrée sur 127.0.0.1:8788")
     except Exception as exc:
         self.server = None; messagebox.showerror(gateway.APP_NAME, f"Démarrage impossible :\n{exc}")
 

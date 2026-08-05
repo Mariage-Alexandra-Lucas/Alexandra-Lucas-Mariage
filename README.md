@@ -66,3 +66,11 @@ Les QR codes Guadeloupe, Île Maurice, Maldives et Mexique peuvent être scanné
 
 La passerelle utilise l'heure officielle du PC Windows sans dépendre de la base
 Python `tzdata`, absente de certains exécutables autonomes.
+
+## Version 2.7 — consoles DJ et Super Admin
+
+- le DJ accède uniquement à la page Animation Elle ou Lui ;
+- lancement du jeu et des questions, clôture des votes et correction de la réponse ;
+- scores des quatre tables suivis en direct ;
+- console Super Admin distincte pour écrire les 15 questions et leurs réponses ;
+- création manuelle des binômes nommés et des équipes de deux binômes corrigée.
