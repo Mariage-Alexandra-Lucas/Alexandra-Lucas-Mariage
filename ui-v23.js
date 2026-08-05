@@ -1,26 +1,20 @@
 (() => {
-  const groups = [
-    ['Table Guadeloupe', ['Kevin','Marie-Jo','Marc','Sylvie','Louise','Joseph','Boris','Méline','Morgane']],
-    ['Table Île Maurice', ['Sophie D','Michel D','Éliane','Gérard','Michel T','Sophie T','Nino','Nathalie']],
-    ['Table Maldives', ['Alexandra','Lucas','Maxime B','Roman','Marine','Clémence','Alexandre','Khoil','Michel A']],
-    ['Table Mexique', ['Quentin','Maxime P','Lucas B','Chloé','Loris','Nina','Maxime G','Florian','Sarah']],
-    ['Animation', ['DJ']]
-  ];
+  const guests = [
+    'Alexandra','Alexandre','Boris','Chloé','Clémence','DJ','Éliane','Florian','Gérard','Joseph','Kevin','Khoil','Loris','Louise','Lucas','Lucas B','Marc','Marie-Jo','Marine','Maxime B','Maxime G','Maxime P','Méline','Michel A','Michel D','Michel T','Morgane','Nathalie','Nina','Nino','Quentin','Roman','Sarah','Sophie D','Sophie T','Sylvie'
+  ].sort((a,b)=>a.localeCompare(b,'fr',{sensitivity:'base'}));
 
   const protectedUsers = new Set(['alexandra','lucas','dj']);
   const icons = {
-    home: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5v8a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>',
-    table: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="6"/><path d="M7 16.5 5 21m12-4.5 2 4.5M4 10h16"/></svg>',
-    photos: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="m8 6 1.5-2h5L16 6"/><circle cx="12" cy="13" r="4"/></svg>',
-    live: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="1"/></svg>',
-    game: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="11" rx="4"/><path d="M8 10v5m-2.5-2.5h5M15.5 11h.01M18 14h.01"/></svg>',
-    profile: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg>'
+    home: '⌂',
+    table: '♢',
+    photos: '▣',
+    live: '◎',
+    game: '🎲',
+    profile: '◯'
   };
 
   loginView = function () {
-    const options = groups.map(([label,names]) =>
-      `<optgroup label="${esc(label)}">${names.map(name => `<option value="${esc(name)}">${esc(name)}</option>`).join('')}</optgroup>`
-    ).join('');
+    const options = guests.map(name => `<option value="${esc(name)}">${esc(name)}</option>`).join('');
 
     app.innerHTML = `<main class="shell login-shell">
       <section class="hero">
@@ -68,7 +62,7 @@
       ${content}
     </main>
     <nav class="nav refined-nav" aria-label="Navigation principale">
-      ${navItems.map(([id,label]) => `<button data-tab="${id}" class="${state.tab===id?'active':''}" aria-label="${label}" ${state.tab===id?'aria-current="page"':''}><span class="nav-icon">${icons[id]}</span><span class="nav-label">${label}</span></button>`).join('')}
+      ${navItems.map(([id,label]) => `<button data-tab="${id}" class="${state.tab===id?'active':''}" aria-label="${label}" ${state.tab===id?'aria-current="page"':''}><span class="nav-icon" aria-hidden="true">${icons[id]}</span><span class="nav-label">${label}</span></button>`).join('')}
     </nav>`;
 
     app.querySelectorAll('[data-tab]').forEach(b=>b.onclick=async()=>{state.tab=b.dataset.tab;if(state.tab==='table')await loadTable();else{await refresh();render()}});
