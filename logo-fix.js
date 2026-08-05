@@ -1,0 +1,1 @@
+(()=>{const apply=()=>document.querySelectorAll('img').forEach(img=>{if((img.getAttribute('src')||'').includes('logo-al.svg'))img.src='./logo.svg?v=2.1-logo-fix'});new MutationObserver(apply).observe(document.documentElement,{childList:true,subtree:true});document.addEventListener('DOMContentLoaded',apply);apply();})();
