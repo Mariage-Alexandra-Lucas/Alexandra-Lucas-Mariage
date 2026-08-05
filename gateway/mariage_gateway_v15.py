@@ -9,7 +9,7 @@ import mariage_gateway as gateway
 # Une origine CORS ne contient jamais le chemin /Alexandra-Lucas-Mariage.
 gateway.PORT = 8788
 gateway.VERSION = "1.5.0"
-WEB_ORIGIN = "https://alpesex.github.io"
+WEB_ORIGIN = "https://mariage-alexandra-lucas.github.io"
 
 # Migration automatique de l'ancienne configuration V1.4.
 config = gateway.load_config()

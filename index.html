@@ -5,19 +5,24 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#bb8a2e">
   <meta name="description" content="Application du mariage d’Alexandra et Lucas">
-  <link rel="icon" href="logo.svg?v=2.3.3-ui" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="icon.svg?v=2.3.3-ui">
-  <link rel="manifest" href="manifest.webmanifest?v=2.3.3-ui">
-  <link rel="stylesheet" href="styles.css?v=2.3.3-ui">
-  <link rel="stylesheet" href="v22.css?v=2.3.3-ui">
-  <link rel="stylesheet" href="nav-v232.css?v=2.3.3-ui">
+  <link rel="icon" href="logo.svg?v=2.3.4-org" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.3.4-org">
+  <link rel="manifest" href="manifest.webmanifest?v=2.3.4-org">
+  <link rel="stylesheet" href="styles.css?v=2.3.4-org">
+  <link rel="stylesheet" href="v22.css?v=2.3.4-org">
+  <link rel="stylesheet" href="nav-v232.css?v=2.3.4-org">
   <title>Mariage d’Alexandra et Lucas</title>
 </head>
 <body>
   <div id="app"></div>
-  <script src="config.js?v=2.3.3-ui"></script>
-  <script src="app.js?v=2.3.3-ui"></script>
-  <script src="ui-v23.js?v=2.3.3-ui"></script>
-  <script src="logo-fix.js?v=2.3.3-ui"></script>
+  <script src="config.js?v=2.3.4-org"></script>
+  <script src="app.js?v=2.3.4-org"></script>
+  <script src="ui-v23.js?v=2.3.4-org"></script>
+  <script src="logo-fix.js?v=2.3.4-org"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js?v=2.3.4-org', {scope: './'}));
+    }
+  </script>
 </body>
 </html>

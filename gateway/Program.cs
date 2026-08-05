@@ -270,7 +270,7 @@ internal sealed class MainForm : Form
         openNas.Click += (_,_) => OpenNas();
         card.Controls.Add(openNas);
         var openWeb = MakeButton("Ouvrir l’application", 498, 180, 152, 40);
-        openWeb.Click += (_,_) => System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("https://alpesex.github.io/Alexandra-Lucas-Mariage/") { UseShellExecute = true });
+        openWeb.Click += (_,_) => System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("https://mariage-alexandra-lucas.github.io/Alexandra-Lucas-Mariage/") { UseShellExecute = true });
         card.Controls.Add(openWeb);
 
         _nasStatus.SetBounds(24, 248, 610, 28);

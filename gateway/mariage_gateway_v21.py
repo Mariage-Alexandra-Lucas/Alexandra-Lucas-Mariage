@@ -13,7 +13,7 @@ import mariage_gateway_v2 as v2
 
 gateway.PORT = 8788
 gateway.VERSION = "2.1.0"
-WEB_ORIGIN = "https://alpesex.github.io"
+WEB_ORIGIN = "https://mariage-alexandra-lucas.github.io"
 
 
 class V21Handler(v2.V2Handler):

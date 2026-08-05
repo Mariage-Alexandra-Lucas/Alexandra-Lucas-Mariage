@@ -23,7 +23,7 @@ jobs:
           python-version: '3.12'
       - name: Installer PyInstaller
         run: python -m pip install --upgrade pip pyinstaller
-      - name: Compiler la passerelle V2.2
+      - name: Compiler la passerelle V2.3
         shell: pwsh
         run: |
           pyinstaller --noconfirm --clean --onefile --windowed `
@@ -36,9 +36,10 @@ jobs:
           New-Item -ItemType Directory -Force -Path pack | Out-Null
           Copy-Item dist/Passerelle-Mariage-Alexandra-Lucas.exe pack/
           @'
-          PASSERELLE MARIAGE ALEXANDRA & LUCAS — V2.2
+          PASSERELLE MARIAGE ALEXANDRA & LUCAS — V2.3
 
           Nouveautés :
+          - compatibilité avec la nouvelle adresse GitHub Pages ;
           - stories photo et vidéo ;
           - texte et autocollants déplaçables après capture ;
           - suppression logique des photos et stories ;
@@ -54,14 +55,14 @@ jobs:
       - name: Publier l'artefact
         uses: actions/upload-artifact@v4
         with:
-          name: Passerelle-Mariage-Alexandra-Lucas-Windows-V2.2
+          name: Passerelle-Mariage-Alexandra-Lucas-Windows-V2.3
           path: Passerelle-Mariage-Alexandra-Lucas-Windows.zip
       - name: Publier la version téléchargeable
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: gateway-v2.2
-          name: Passerelle Mariage Windows V2.2
+          tag_name: gateway-v2.3
+          name: Passerelle Mariage Windows V2.3
           body: |
-            Stories vidéo, texte déplaçable et archivage des photos supprimées.
+            Nouvelle adresse GitHub Pages, stories vidéo, texte déplaçable et archivage des photos supprimées.
           files: Passerelle-Mariage-Alexandra-Lucas-Windows.zip
           make_latest: true

@@ -14,8 +14,8 @@ import mariage_gateway as gateway
 import mariage_gateway_v2 as v2
 
 gateway.PORT = 8788
-gateway.VERSION = "2.2.0"
-WEB_ORIGIN = "https://alpesex.github.io"
+gateway.VERSION = "2.3.0"
+WEB_ORIGIN = "https://mariage-alexandra-lucas.github.io"
 
 
 def archive_item(config: dict, kind: str, item_id: str, user: dict) -> bool:
@@ -50,7 +50,7 @@ def archive_item(config: dict, kind: str, item_id: str, user: dict) -> bool:
 
 
 class V22Handler(v2.V2Handler):
-    server_version = "MariageGateway/2.2"
+    server_version = "MariageGateway/2.3"
 
     def _headers(self, status=200, content_type="application/json; charset=utf-8"):
         self.send_response(status)
@@ -161,8 +161,8 @@ def start_v22(self):
         self.server = gateway.GatewayServer(("127.0.0.1", gateway.PORT), V22Handler, self.config)
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
         self.thread.start()
-        self.status.config(text="● Passerelle V2.2 active — port 8788", fg="#74d3ae")
-        gateway.log("Passerelle mariage V2.2 démarrée sur 127.0.0.1:8788")
+        self.status.config(text="● Passerelle V2.3 active — port 8788", fg="#74d3ae")
+        gateway.log("Passerelle mariage V2.3 démarrée sur 127.0.0.1:8788")
     except Exception as exc:
         self.server = None
         messagebox.showerror(gateway.APP_NAME, f"Démarrage impossible :\n{exc}")

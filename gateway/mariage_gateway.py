@@ -17,10 +17,11 @@ from tkinter import BOTH, END, LEFT, RIGHT, X, Button, Entry, Frame, Label, Stri
 from urllib.parse import urlparse
 
 APP_NAME = "Passerelle Mariage Alexandra & Lucas"
-VERSION = "1.0.0"
+VERSION = "2.3.0"
 PORT = 8787
 UNLOCK_AT = datetime.fromisoformat("2026-08-29T18:00:00+02:00")
-APP_URL = "https://alpesex.github.io/Alexandra-Lucas-Mariage/"
+WEB_ORIGIN = "https://mariage-alexandra-lucas.github.io"
+APP_URL = f"{WEB_ORIGIN}/Alexandra-Lucas-Mariage/"
 
 TABLES = {
     "Guadeloupe": ["Kevin", "Marie-Jo", "Marc", "Sylvie", "Louise", "Joseph", "Boris", "Méline", "Morgane"],
@@ -51,7 +52,7 @@ def default_config() -> dict:
         "admin_password": "",
         "dj_password": "",
         "token_secret": secrets.token_hex(32),
-        "allowed_origin": APP_URL.rstrip("/"),
+        "allowed_origin": WEB_ORIGIN,
     }
 
 

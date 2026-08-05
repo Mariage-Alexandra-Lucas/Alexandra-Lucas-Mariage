@@ -1,4 +1,4 @@
-PASSERELLE MARIAGE ALEXANDRA & LUCAS — V1.2
+PASSERELLE MARIAGE ALEXANDRA & LUCAS — V2.3
 
 Chemin NAS préconfiguré :
 X:\Mariage_Alexandra_Lucas
@@ -26,4 +26,4 @@ Si Windows affiche SmartScreen :
 Informations complémentaires > Exécuter quand même.
 
 Application web :
-https://alpesex.github.io/Alexandra-Lucas-Mariage/
+https://mariage-alexandra-lucas.github.io/Alexandra-Lucas-Mariage/

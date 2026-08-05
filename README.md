@@ -22,4 +22,8 @@ Ouvrir ensuite `http://localhost:8080`.
 
 ## Publication
 
-Activer GitHub Pages sur la branche `main`, dossier racine. La passerelle sécurisée NAS et l’heure serveur authoritative seront ajoutées dans la prochaine étape backend.
+GitHub Pages est publié depuis la branche `main`, dossier racine :
+
+https://mariage-alexandra-lucas.github.io/Alexandra-Lucas-Mariage/
+
+La passerelle NAS autorise cette nouvelle origine GitHub Pages.

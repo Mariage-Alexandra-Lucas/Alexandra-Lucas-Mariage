@@ -15,7 +15,7 @@ import mariage_gateway as gateway
 
 gateway.PORT = 8788
 gateway.VERSION = "2.0.0"
-WEB_ORIGIN = "https://alpesex.github.io"
+WEB_ORIGIN = "https://mariage-alexandra-lucas.github.io"
 
 cfg = gateway.load_config()
 cfg["allowed_origin"] = WEB_ORIGIN

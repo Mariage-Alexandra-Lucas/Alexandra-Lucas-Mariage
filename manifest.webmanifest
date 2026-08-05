@@ -3,13 +3,15 @@
   "short_name": "A & L",
   "description": "Application privée du mariage d’Alexandra et Lucas",
   "lang": "fr",
-  "id": "/Alexandra-Lucas-Mariage/?app=alexandra-lucas-v21-repair",
-  "start_url": "./?v=2.1-repair",
-  "scope": "./",
+  "id": "/Alexandra-Lucas-Mariage/",
+  "start_url": "/Alexandra-Lucas-Mariage/",
+  "scope": "/Alexandra-Lucas-Mariage/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#bb8a2e",
   "icons": [
-    {"src":"icon.svg?v=2.1-repair","sizes":"any","type":"image/svg+xml","purpose":"any"}
+    {"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},
+    {"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},
+    {"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}
   ]
 }
