@@ -74,3 +74,8 @@ Python `tzdata`, absente de certains exécutables autonomes.
 - scores des quatre tables suivis en direct ;
 - console Super Admin distincte pour écrire les 15 questions et leurs réponses ;
 - création manuelle des binômes nommés et des équipes de deux binômes corrigée.
+
+### Version 2.7.1
+
+- quatre jeux toujours déverrouillés pour Alexandra et Lucas en vue Super Admin ;
+- QR codes agrandissables et imprimables individuellement depuis la configuration.

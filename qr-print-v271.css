@@ -1,0 +1,6 @@
+.admin-unlocked{display:block;background:#e7f6eb;border-radius:14px;padding:13px;color:#267343;font-weight:800}
+.qr-card{border:1px solid var(--line);border-radius:14px;padding:10px;background:#fff;color:var(--ink);cursor:pointer;text-align:center}
+.qr-card img{display:block;width:100%;background:#fff}
+.qr-card strong,.qr-card span{display:block}.qr-card strong{margin-top:7px;font-size:1rem}.qr-card span{margin-top:3px;color:#946718;font-size:.75rem;font-weight:800}
+.qr-print-sheet{text-align:center}.qr-print-logo{width:90px;max-height:90px;object-fit:contain}.qr-print-sheet>p{margin-bottom:4px}.qr-print-sheet h2{margin-top:0;font-family:Georgia,serif;font-size:2rem}.qr-large{display:block;width:min(100%,440px);margin:12px auto;background:#fff}.qr-instruction{font-weight:700}
+@media print{body>*:not(.qr-modal){display:none!important}.qr-modal{position:static!important;display:block!important;background:#fff!important;padding:0!important}.qr-modal .qr-print-sheet{width:100%!important;max-height:none!important;overflow:visible!important;border-radius:0!important;padding:15mm!important;box-sizing:border-box}.qr-modal .modal-close,.qr-modal #print-qr{display:none!important}.qr-large{width:125mm!important}.qr-print-logo{width:28mm!important}}

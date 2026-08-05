@@ -236,8 +236,12 @@ class V24Handler(v22.V22Handler):
                 self._json({"ok": True, "progress": item}); return
             if route == "/api/v24/game-progress":
                 data = self._body(); game = str(data.get("game", ""))
+                if game not in GAME_CODES:
+                    self._json({"error": "Jeu inconnu."}, 400); return
                 all_progress = read_store(config, "progress", {}); key = user_key(user)
                 item = all_progress.setdefault(key, {"name": user["name"], "unlocked": [], "completed": [], "challengePoints": 0})
+                if user.get("role") == "superadmin" and game not in item.get("unlocked", []):
+                    item.setdefault("unlocked", []).append(game)
                 if game not in item.get("unlocked", []):
                     self._json({"error": "Jeu non déverrouillé."}, 403); return
                 if game not in item["completed"]: item["completed"].append(game)
