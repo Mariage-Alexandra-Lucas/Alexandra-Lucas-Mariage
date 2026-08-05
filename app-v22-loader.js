@@ -4,10 +4,11 @@
     const bytes=Uint8Array.from(atob(encoded.trim()),c=>c.charCodeAt(0));
     const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
     let source=await new Response(stream).text();
-    const logo='./logo-v27.jpg?v=2.7';
+    const logo='./logo.svg?v=2.1-restore';
     source=source.replaceAll('./logo-officiel.webp',logo);
     source=source.replaceAll('./logo-officiel.png?v=2.3',logo);
     source=source.replaceAll('./logo-mariage-v24.svg?v=2.4',logo);
+    source=source.replaceAll('./logo-v27.jpg?v=2.7',logo);
     source=source.replaceAll('./logo-al.svg',logo);
     source=source.replaceAll('./logo.svg',logo);
     (0,eval)(source);
