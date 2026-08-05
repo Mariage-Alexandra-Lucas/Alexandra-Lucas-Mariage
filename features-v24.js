@@ -45,7 +45,7 @@
       const result=await api('/api/v24/unlock',{method:'POST',body:JSON.stringify({game,code})});
       state.v24.progress=result.progress; state.tab='game';
       history.replaceState({},'',location.pathname); toast(`Jeu ${gameInfo[game]?.name||game} déverrouillé définitivement !`);
-    }catch(e){toast(e.message)}
+    }catch(e){if(e.status===423)history.replaceState({},'',location.pathname);toast(e.message)}
   }
 
   function toast(text){document.querySelector('.toast')?.remove();document.body.insertAdjacentHTML('beforeend',`<div class="toast">${esc(text)}</div>`);setTimeout(()=>document.querySelector('.toast')?.remove(),3500)}

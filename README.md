@@ -49,3 +49,15 @@ Les QR codes Guadeloupe, Île Maurice, Maldives et Mexique peuvent être scanné
 - scores automatiques lors de la révélation ;
 - classement en direct et corrections manuelles Super Admin ;
 - remise à zéro complète avant le mariage.
+
+## Version 2.6 — déroulement automatique
+
+- jeux des binômes disponibles à partir de 15h00 ;
+- équipes de quatre disponibles à partir de 15h45 ;
+- jeux des quatre tables et QR codes bloqués jusqu’à 18h00 ;
+- création manuelle et nommage des binômes en Super Admin ;
+- association manuelle de deux binômes dans chaque équipe ;
+- sélection multiple des participants avec menus de prénoms ;
+- compte à rebours et étapes de la journée entièrement automatiques ;
+- mini-film souvenir personnel disponible le dimanche ;
+- correction des icônes de la barre de navigation.
