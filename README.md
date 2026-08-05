@@ -27,3 +27,16 @@ GitHub Pages est publié depuis la branche `main`, dossier racine :
 https://mariage-alexandra-lucas.github.io/Alexandra-Lucas-Mariage/
 
 La passerelle NAS autorise cette nouvelle origine GitHub Pages.
+
+## Version 2.4 — animations du mariage
+
+- annonces et programme dynamique en direct ;
+- informations pratiques avec itinéraires GPS ;
+- livre d’or texte, photo, audio et vidéo avec album ZIP ;
+- binômes entre les deux familles et équipes de quatre ;
+- défis photos partagés entre tous les participants identifiés ;
+- quatre mini-jeux déverrouillés définitivement par les QR codes des tables ;
+- mode souvenirs après le mariage ;
+- tableau de bord administrateur avec progression et état du NAS.
+
+Les QR codes Guadeloupe, Île Maurice, Maldives et Mexique peuvent être scannés par tous les invités. Le déverrouillage est personnel, permanent et conservé par la passerelle sur le NAS.

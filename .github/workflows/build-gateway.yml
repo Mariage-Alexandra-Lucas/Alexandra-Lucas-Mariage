@@ -23,23 +23,27 @@ jobs:
           python-version: '3.12'
       - name: Installer PyInstaller
         run: python -m pip install --upgrade pip pyinstaller
-      - name: Compiler la passerelle V2.3
+      - name: Compiler la passerelle V2.4
         shell: pwsh
         run: |
           pyinstaller --noconfirm --clean --onefile --windowed `
             --name "Passerelle-Mariage-Alexandra-Lucas" `
             --paths gateway `
-            gateway/mariage_gateway_v22.py
+            gateway/mariage_gateway_v24.py
       - name: Créer le pack ZIP
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path pack | Out-Null
           Copy-Item dist/Passerelle-Mariage-Alexandra-Lucas.exe pack/
           @'
-          PASSERELLE MARIAGE ALEXANDRA & LUCAS — V2.3
+          PASSERELLE MARIAGE ALEXANDRA & LUCAS — V2.4
 
           Nouveautés :
-          - compatibilité avec la nouvelle adresse GitHub Pages ;
+          - annonces et programme en direct ;
+          - livre d’or multimédia et galerie souvenirs ;
+          - binômes inter-familles et défis photo partagés ;
+          - quatre jeux déverrouillés définitivement par QR code ;
+          - tableau de bord administrateur et suivi NAS ;
           - stories photo et vidéo ;
           - texte et autocollants déplaçables après capture ;
           - suppression logique des photos et stories ;
@@ -55,14 +59,14 @@ jobs:
       - name: Publier l'artefact
         uses: actions/upload-artifact@v4
         with:
-          name: Passerelle-Mariage-Alexandra-Lucas-Windows-V2.3
+          name: Passerelle-Mariage-Alexandra-Lucas-Windows-V2.4
           path: Passerelle-Mariage-Alexandra-Lucas-Windows.zip
       - name: Publier la version téléchargeable
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: gateway-v2.3
-          name: Passerelle Mariage Windows V2.3
+          tag_name: gateway-v2.4
+          name: Passerelle Mariage Windows V2.4
           body: |
-            Nouvelle adresse GitHub Pages, stories vidéo, texte déplaçable et archivage des photos supprimées.
+            Jeux QR permanents, binômes, livre d’or multimédia, annonces et tableau de bord.
           files: Passerelle-Mariage-Alexandra-Lucas-Windows.zip
           make_latest: true
