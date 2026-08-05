@@ -1,8 +1,8 @@
-const CACHE='alexandra-lucas-v2-4-0-animations';
+const CACHE='alexandra-lucas-v2-5-0-quiz-dj';
 const ASSETS=[
   './','./index.html',
-  './styles.css?v=2.4.0','./v22.css?v=2.4.0','./nav-v232.css?v=2.4.0','./features-v24.css?v=2.4.0',
-  './config.js?v=2.4.0','./app.js?v=2.4.0','./ui-v23.js?v=2.4.0','./logo-fix.js?v=2.4.0','./features-v24.js?v=2.4.0',
+  './styles.css?v=2.4.0','./v22.css?v=2.4.0','./nav-v232.css?v=2.4.0','./features-v24.css?v=2.4.0','./quiz-v25.css?v=2.5.0',
+  './config.js?v=2.4.0','./app.js?v=2.4.0','./ui-v23.js?v=2.4.0','./logo-fix.js?v=2.4.0','./features-v24.js?v=2.4.0','./quiz-v25.js?v=2.5.0',
   './manifest.webmanifest?v=2.4.0','./logo.svg','./icon.svg','./icon-192.png','./icon-512.png','./apple-touch-icon.png',
   './qr-guadeloupe.svg','./qr-ile-maurice.svg','./qr-maldives.svg','./qr-mexique.svg'
 ];

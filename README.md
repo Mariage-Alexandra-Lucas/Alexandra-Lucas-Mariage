@@ -40,3 +40,12 @@ La passerelle NAS autorise cette nouvelle origine GitHub Pages.
 - tableau de bord administrateur avec progression et état du NAS.
 
 Les QR codes Guadeloupe, Île Maurice, Maldives et Mexique peuvent être scannés par tous les invités. Le déverrouillage est personnel, permanent et conservé par la passerelle sur le NAS.
+
+## Version 2.5 — quiz DJ
+
+- 15 questions « Elle ou Lui » configurables en Vue Super Admin ;
+- lancement, clôture et révélation question par question depuis le compte DJ ;
+- une réponse commune par table, modifiable tant que la question est ouverte ;
+- scores automatiques lors de la révélation ;
+- classement en direct et corrections manuelles Super Admin ;
+- remise à zéro complète avant le mariage.
