@@ -1,9 +1,8 @@
-const CACHE='alexandra-lucas-logo-v2-1-restored';
+const CACHE='alexandra-lucas-v2-1-repair-direct';
 const ASSETS=[
-  './?v=2.1-restore','./index.html','./styles.css?v=2.1-restore','./v22.css?v=2.1-restore',
-  './app-v22-loader.js?v=2.1-restore','./app-v22.payload?v=2.4',
-  './config.js?v=2.1-restore','./manifest.webmanifest?v=2.1-restore',
-  './logo.svg?v=2.1-restore','./icon.svg?v=2.1-restore'
+  './?v=2.1-repair','./index.html','./styles.css?v=2.1-repair','./v22.css?v=2.1-repair',
+  './app.js?v=2.1-repair','./config.js?v=2.1-repair','./manifest.webmanifest?v=2.1-repair',
+  './logo.svg?v=2.1-repair','./icon.svg?v=2.1-repair'
 ];
 self.addEventListener('install',event=>event.waitUntil(
   caches.keys().then(keys=>Promise.all(keys.map(key=>caches.delete(key))))
@@ -19,5 +18,5 @@ self.addEventListener('fetch',event=>{
     const copy=response.clone();
     caches.open(CACHE).then(cache=>cache.put(event.request,copy));
     return response;
-  }).catch(()=>caches.match(event.request).then(cached=>cached||caches.match('./?v=2.1-restore'))));
+  }).catch(()=>caches.match(event.request).then(cached=>cached||caches.match('./?v=2.1-repair'))));
 });
