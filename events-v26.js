@@ -10,7 +10,8 @@
     game:'<svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="11" rx="4"/><path d="M8 10v5M5.5 12.5h5"/><circle cx="16" cy="11" r="1"/><circle cx="18" cy="14" r="1"/></svg>',
     profile:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg>'
   };
-  async function loadEvents(){if(!state.user)return;state.events=await api('/api/v26/events').catch(()=>state.events);clockOffset=new Date(state.events.serverTime).getTime()-Date.now()}
+  function applyEvents(value){if(!value)return;state.events=value;clockOffset=new Date(state.events.serverTime).getTime()-Date.now()}
+  async function loadEvents(){if(!state.user)return;applyEvents(await api('/api/v26/events').catch(()=>state.events))}
   refresh=async function(){await previousRefresh();await loadEvents()};
   const now=()=>new Date(Date.now()+clockOffset);
   const at=value=>new Date(value);
@@ -42,7 +43,7 @@
   function manualGroups(){if(!(state.user.role==='superadmin'&&state.adminView))return '';return `<section class="card manual-groups"><div class="section-title">Binômes manuels</div><p>Donnez un nom à chaque binôme et choisissez exactement deux personnes.</p><div id="pair-editor">${(state.events.pairs||[]).map(pairRow).join('')}</div><button class="btn secondary" id="add-pair">＋ Ajouter un binôme</button><button class="btn" id="save-pairs">Enregistrer les binômes</button></section><section class="card manual-groups"><div class="section-title">Équipes de quatre</div><p>Associez deux binômes qui devront se retrouver entre la mairie et l’église.</p><div id="team-editor">${(state.events.teams||[]).map(teamRow).join('')}</div><button class="btn secondary" id="add-team">＋ Ajouter une équipe</button><button class="btn" id="save-teams">Enregistrer les équipes</button></section>`}
   function pairRow(pair={name:'',members:['','']}){return `<div class="group-row pair-row"><input class="field pair-name" placeholder="Nom du binôme" value="${esc(pair.name)}"><select class="field pair-member">${guestOptions(pair.members?.[0])}</select><select class="field pair-member">${guestOptions(pair.members?.[1])}</select><button class="remove-group" type="button">×</button></div>`}
   function teamRow(team={name:'',pairs:['','']}){return `<div class="group-row team-row"><input class="field team-name" placeholder="Nom de l’équipe (facultatif)" value="${esc(team.name)}"><select class="field team-pair">${pairOptions(team.pairs?.[0])}</select><select class="field team-pair">${pairOptions(team.pairs?.[1])}</select><button class="remove-group" type="button">×</button></div>`}
-  function souvenirFilm(){const available=now()>=at('2026-08-30T08:00:00+02:00'),photos=(state.photos||[]).filter(x=>(x.mediaType||'image')==='image').slice(0,8);if(!available)return '';return `<section class="card souvenir-film"><div class="section-title">Votre film souvenir</div><h2>Votre mariage en quelques secondes</h2>${photos.length?`<div class="film-cover"><div>${photos.map((p,i)=>`<img src="${mediaUrl(p)}" data-film-image="${i}" class="${i===0?'active':''}">`).join('')}<p id="film-caption">Votre journée commence ici…</p></div><button class="btn" id="play-film">▶ Voir mon mini-film</button></div>`:'<p>Ajoutez quelques photos pour générer automatiquement votre mini-film souvenir.</p>'}</section>`}
+  function souvenirFilm(){const available=now()>=at('2026-08-30T08:00:00+02:00'),photos=(state.photos||[]).filter(x=>(x.mediaType||'image')==='image').slice(0,8);if(!available)return '';return `<section class="card souvenir-film"><div class="section-title">Votre film souvenir</div><h2>Votre mariage en quelques secondes</h2>${photos.length?`<div class="film-cover"><div>${photos.map((p,i)=>`<img src="${mediaUrl(p)}" data-film-image="${i}" class="${i===0?'active':''}" loading="lazy" decoding="async">`).join('')}<p id="film-caption">Votre journée commence ici…</p></div><button class="btn" id="play-film">▶ Voir mon mini-film</button></div>`:'<p>Ajoutez quelques photos pour générer automatiquement votre mini-film souvenir.</p>'}</section>`}
   profileView=function(){
     let html=previousProfileView();
     html=html.replace(/<section class="card"><div class="section-title">Préparation des binômes<\/div>.*?<\/section>/,'');
@@ -69,5 +70,5 @@
   }
   function fixIcons(){['home','table','photos','live','game','profile'].forEach(id=>{const target=app.querySelector(`[data-tab="${id}"] .nav-icon`);if(target)target.innerHTML=icons[id]})}
   shell=function(){previousShell();bindEvents();fixIcons();window.MARIAGE_QUIZ_V25?.bind?.();if(state.user?.role==='superadmin'&&state.adminView){const profile=app.querySelector('[data-tab="profile"]');if(profile){profile.querySelector('.nav-label').textContent='Configuration';profile.setAttribute('aria-label','Configuration Super Admin')}}clearInterval(clockTimer);if(state.tab==='home')clockTimer=setInterval(()=>render(),60000)};
-  if(state.user)loadEvents().finally(render);
+  window.MARIAGE_EVENTS_V26={apply:applyEvents};
 })();

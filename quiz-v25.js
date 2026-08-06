@@ -55,7 +55,7 @@
     app.querySelector('#quiz-config-form')?.addEventListener('submit',async event=>{event.preventDefault();const form=new FormData(event.target),questions=Array.from({length:15},(_,i)=>({text:form.get(`question-${i}`),answer:form.get(`answer-${i}`)}));try{state.quiz=await api('/api/v25/quiz/config',{method:'POST',body:JSON.stringify({questions})});render();toast('Les 15 questions sont enregistrées')}catch(e){toast(e.message)}});
     app.querySelector('#reset-quiz')?.addEventListener('click',async()=>{if(!confirm('Effacer toutes les réponses et remettre les scores à zéro ?'))return;state.quiz=await api('/api/v25/quiz/control',{method:'POST',body:JSON.stringify({action:'reset'})});render();toast('Quiz remis à zéro')});
   }
-  function startPolling(){clearInterval(quizTimer);quizSignature=JSON.stringify(state.quiz);quizTimer=setInterval(async()=>{const next=await api('/api/v25/quiz').catch(()=>null);if(next&&JSON.stringify(next)!==quizSignature){state.quiz=next;quizSignature=JSON.stringify(next);render()}},3000)}
+  function startPolling(){clearInterval(quizTimer);quizSignature=JSON.stringify(state.quiz);quizTimer=setInterval(async()=>{if(document.hidden)return;const next=await api('/api/v25/quiz').catch(()=>null);if(next&&JSON.stringify(next)!==quizSignature){state.quiz=next;quizSignature=JSON.stringify(next);render()}},3000)}
   shell=function(){
     if(state.user?.role==='dj'){
       app.innerHTML=`<main class="shell dj-only"><header class="dj-header"><div><span>Animation</span><strong>Elle ou Lui</strong></div><button class="btn secondary" id="logout">Se déconnecter</button></header>${controlPanel()}</main>`;
@@ -65,5 +65,4 @@
   };
   window.MARIAGE_QUIZ_V25={editor:quizEditor,bind:bindQuiz};
   window.addEventListener('beforeunload',()=>clearInterval(quizTimer));
-  if(state.user)loadQuiz().finally(render);
 })();

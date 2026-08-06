@@ -86,3 +86,12 @@ Python `tzdata`, absente de certains exécutables autonomes.
 - les réponses sont conservées dans la progression sur le NAS ;
 - puzzle des mariés personnalisé : ordre des trois souvenirs, années des trois photos,
   lieu de la référence et anecdote vraie.
+
+## Version 2.8 — performances
+
+- navigation immédiate avec synchronisation silencieuse en arrière-plan ;
+- chargement ciblé selon l’onglet et appels parallèles à la passerelle ;
+- suppression des rafraîchissements complets en doublon au démarrage ;
+- cache PWA instantané pour les ressources statiques ;
+- photos du puzzle chargées uniquement à l’ouverture ;
+- médias chargés progressivement et quiz suspendu lorsque l’application est masquée.
