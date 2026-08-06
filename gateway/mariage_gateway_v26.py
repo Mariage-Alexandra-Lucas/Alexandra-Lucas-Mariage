@@ -14,7 +14,7 @@ import mariage_gateway_v24 as v24
 import mariage_gateway_v25 as v25
 
 gateway.PORT = 8788
-gateway.VERSION = "2.7.1"
+gateway.VERSION = "2.7.2"
 WEB_ORIGIN = "https://mariage-alexandra-lucas.github.io"
 PARIS = timezone(timedelta(hours=2), "Europe/Paris")
 PAIR_AT = datetime(2026, 8, 29, 15, 0, tzinfo=PARIS)
@@ -107,7 +107,7 @@ def events_payload(config: dict, user: dict) -> dict:
 
 
 class V26Handler(v25.V25Handler):
-    server_version = "MariageGateway/2.7.1"
+    server_version = "MariageGateway/2.7.2"
 
     def _dj_route_allowed(self, route: str) -> bool:
         user = self._user_any()
@@ -191,8 +191,8 @@ def start_v26(self):
         v24.ensure_v24_tree(self.config)
         self.server = gateway.GatewayServer(("127.0.0.1", gateway.PORT), V26Handler, self.config)
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True); self.thread.start()
-        self.status.config(text="● Passerelle V2.7.1 active — port 8788", fg="#74d3ae")
-        gateway.log("Passerelle mariage V2.7.1 démarrée sur 127.0.0.1:8788")
+        self.status.config(text="● Passerelle V2.7.2 active — port 8788", fg="#74d3ae")
+        gateway.log("Passerelle mariage V2.7.2 démarrée sur 127.0.0.1:8788")
     except Exception as exc:
         self.server = None; messagebox.showerror(gateway.APP_NAME, f"Démarrage impossible :\n{exc}")
 

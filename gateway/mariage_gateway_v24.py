@@ -235,7 +235,7 @@ class V24Handler(v22.V22Handler):
                 item["lastUpdate"] = now(); write_store(config, "progress", all_progress)
                 self._json({"ok": True, "progress": item}); return
             if route == "/api/v24/game-progress":
-                data = self._body(); game = str(data.get("game", ""))
+                data = self._body(); game = str(data.get("game", "")); answers = data.get("answers")
                 if game not in GAME_CODES:
                     self._json({"error": "Jeu inconnu."}, 400); return
                 all_progress = read_store(config, "progress", {}); key = user_key(user)
@@ -244,6 +244,21 @@ class V24Handler(v22.V22Handler):
                     item.setdefault("unlocked", []).append(game)
                 if game not in item.get("unlocked", []):
                     self._json({"error": "Jeu non déverrouillé."}, 403); return
+                expected_counts = {"guadeloupe": 4, "ile-maurice": 4, "mexique": 6}
+                if game in expected_counts:
+                    if not isinstance(answers, list) or len(answers) != expected_counts[game] or any(not str(x).strip() for x in answers):
+                        self._json({"error": "Une réponse écrite est obligatoire pour chaque mission."}, 400); return
+                    cleaned_answers = [str(x).strip()[:300] for x in answers]
+                else:
+                    if not isinstance(answers, dict):
+                        self._json({"error": "Complétez les quatre épreuves du puzzle."}, 400); return
+                    order = answers.get("order", []); years = answers.get("years", {})
+                    place = str(answers.get("place", "")).strip().lower(); anecdote = str(answers.get("anecdote", ""))
+                    correct = order == ["1", "2", "3"] and years == {"photo2021": "2021", "photo2024": "2024", "photo2015": "2015"} and place in {"mexique", "le mexique"} and anecdote == "corail"
+                    if not correct:
+                        self._json({"error": "Une ou plusieurs réponses du puzzle sont incorrectes. Essayez encore !"}, 400); return
+                    cleaned_answers = {"order": order, "years": years, "place": "Mexique", "anecdote": anecdote}
+                item.setdefault("gameAnswers", {})[game] = cleaned_answers
                 if game not in item["completed"]: item["completed"].append(game)
                 item["lastUpdate"] = now(); write_store(config, "progress", all_progress)
                 self._json({"ok": True, "progress": item}); return

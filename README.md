@@ -79,3 +79,10 @@ Python `tzdata`, absente de certains exécutables autonomes.
 
 - quatre jeux toujours déverrouillés pour Alexandra et Lucas en vue Super Admin ;
 - QR codes agrandissables et imprimables individuellement depuis la configuration.
+
+### Version 2.7.2
+
+- une réponse écrite apparaît et devient obligatoire pour chaque mission cochée ;
+- les réponses sont conservées dans la progression sur le NAS ;
+- puzzle des mariés personnalisé : ordre des trois souvenirs, années des trois photos,
+  lieu de la référence et anecdote vraie.
