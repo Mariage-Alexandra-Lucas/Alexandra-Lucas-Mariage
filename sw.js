@@ -1,8 +1,8 @@
-const CACHE='alexandra-lucas-v2-8-0-performance';
+const CACHE='alexandra-lucas-v2-8-1-quiz-sync';
 const ASSETS=[
   './','./index.html',
   './styles.css?v=2.4.0','./v22.css?v=2.4.0','./nav-v232.css?v=2.4.0','./features-v24.css?v=2.6.0','./quiz-v25.css?v=2.7.0','./events-v26.css?v=2.7.0','./console-v27.css?v=2.7.0','./qr-print-v271.css?v=2.7.1','./games-v272.css?v=2.7.2','./performance-v28.css?v=2.8.0',
-  './config.js?v=2.4.0','./app.js?v=2.8.0','./ui-v23.js?v=2.4.0','./logo-fix.js?v=2.4.0','./features-v24.js?v=2.8.0','./quiz-v25.js?v=2.8.0','./events-v26.js?v=2.8.0','./performance-v28.js?v=2.8.0',
+  './config.js?v=2.4.0','./app.js?v=2.8.0','./ui-v23.js?v=2.4.0','./logo-fix.js?v=2.4.0','./features-v24.js?v=2.8.0','./quiz-v25.js?v=2.8.1','./events-v26.js?v=2.8.0','./performance-v28.js?v=2.8.0',
   './manifest.webmanifest?v=2.4.0','./logo.svg','./icon.svg','./icon-192.png','./icon-512.png','./apple-touch-icon.png',
   './qr-guadeloupe.svg','./qr-ile-maurice.svg','./qr-maldives.svg','./qr-mexique.svg'
 ];
