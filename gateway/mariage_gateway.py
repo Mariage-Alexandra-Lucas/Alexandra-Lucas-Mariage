@@ -25,7 +25,7 @@ APP_URL = f"{WEB_ORIGIN}/Alexandra-Lucas-Mariage/"
 
 TABLES = {
     "Guadeloupe": ["Kevin", "Marie-Jo", "Marc", "Sylvie", "Louise", "Joseph", "Boris", "Méline", "Morgane"],
-    "Île Maurice": ["Sophie D", "Michel D", "Éliane", "Gérard", "Michel T", "Sophie T", "Nino", "Nathalie"],
+    "Île Maurice": ["Sophie D", "Michel D", "Éliane", "Gérard", "Michel T", "Sophie T", "Nino", "Nathalie", "Isabelle"],
     "Maldives": ["Alexandra", "Lucas", "Maxime B", "Roman", "Marine", "Clémence", "Alexandre", "Khoil", "Michel A"],
     "Mexique": ["Quentin", "Maxime P", "Lucas B", "Chloé", "Loris", "Nina", "Maxime G", "Florian", "Sarah"],
 }
