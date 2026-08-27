@@ -31,7 +31,7 @@ jobs:
             --paths gateway `
             --collect-all imageio_ffmpeg `
             --collect-all pillow_heif `
-            gateway/mariage_gateway_v29.py
+            gateway/mariage_gateway_v29_windows.py
       - name: Créer le pack ZIP
         shell: pwsh
         run: |
