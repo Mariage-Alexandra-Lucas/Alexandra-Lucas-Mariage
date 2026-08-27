@@ -21,45 +21,36 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Installer PyInstaller
-        run: python -m pip install --upgrade pip pyinstaller
-      - name: Compiler la passerelle V2.7.2
+      - name: Installer les dépendances de la passerelle
+        run: python -m pip install --upgrade pip pyinstaller pillow pillow-heif imageio-ffmpeg
+      - name: Compiler la passerelle V2.9.0
         shell: pwsh
         run: |
           pyinstaller --noconfirm --clean --onefile --windowed `
             --name "Passerelle-Mariage-Alexandra-Lucas" `
             --paths gateway `
-            gateway/mariage_gateway_v26.py
+            --collect-all imageio_ffmpeg `
+            --collect-all pillow_heif `
+            gateway/mariage_gateway_v29.py
       - name: Créer le pack ZIP
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path pack | Out-Null
           Copy-Item dist/Passerelle-Mariage-Alexandra-Lucas.exe pack/
           @'
-          PASSERELLE MARIAGE ALEXANDRA & LUCAS — V2.7.2
+          PASSERELLE MARIAGE ALEXANDRA & LUCAS — V2.9.0
 
           Nouveautés :
-          - annonces et programme en direct ;
-          - livre d’or multimédia et galerie souvenirs ;
-          - binômes inter-familles et défis photo partagés ;
-          - quatre jeux déverrouillés définitivement par QR code ;
-          - tableau de bord administrateur et suivi NAS ;
-          - quiz DJ de 15 questions Elle ou Lui ;
-          - une réponse commune par table et scores en direct ;
-          - horaires automatiques des animations ;
-          - configuration manuelle des binômes et équipes ;
-          - film souvenir et sélection multiple des participants ;
-          - correction du démarrage Windows sans dépendance tzdata ;
-          - page DJ exclusive pour l'animation Elle ou Lui ;
-          - console Super Admin séparée pour les questions et les groupes ;
-          - accès permanent aux quatre jeux pour les Super Admin ;
-          - réponses écrites enregistrées pour chaque mission ;
-          - nouveau puzzle des mariés avec souvenirs, photos et anecdotes ;
-          - stories photo et vidéo ;
-          - texte et autocollants déplaçables après capture ;
-          - suppression logique des photos et stories ;
-          - conservation permanente des éléments retirés sur le NAS ;
-          - logo officiel sur l'accueil et l'icône de l'application.
+          - livre d’or souvenir directement en vidéo MP4 portrait ;
+          - vidéo personnalisée de 10 à 20 photos pour chaque invité selon les photos de l'invité, de son binôme et de son équipe ;
+          - livre d’or global Alexandra & Lucas jusqu’à 50 photos ;
+          - sélection automatique et équilibrée entre les participants ;
+          - détection perceptuelle des photos identiques ou trop similaires ;
+          - commentaires automatiques selon le contexte de la photo ;
+          - mise en page portrait 9:16 avec police élégante et fond photographique ;
+          - prise en charge JPG, PNG, WebP et HEIC/HEIF ;
+          - génération à la demande et cache automatique sur le NAS ;
+          - téléchargement direct du fichier .mp4 depuis l’application.
 
           Port : 8788
           NAS : X:\Mariage_Alexandra_Lucas
@@ -70,14 +61,14 @@ jobs:
       - name: Publier l'artefact
         uses: actions/upload-artifact@v4
         with:
-          name: Passerelle-Mariage-Alexandra-Lucas-Windows-V2.7.2
+          name: Passerelle-Mariage-Alexandra-Lucas-Windows-V2.9.0
           path: Passerelle-Mariage-Alexandra-Lucas-Windows.zip
       - name: Publier la version téléchargeable
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: gateway-v2.7.2
-          name: Passerelle Mariage Windows V2.7.2
+          tag_name: gateway-v2.9.0
+          name: Passerelle Mariage Windows V2.9.0
           body: |
-            Réponses écrites pour chaque mission et nouveau puzzle personnalisé des mariés.
+            Livre d’or vidéo portrait MP4 avec sélection automatique des photos, déduplication visuelle et commentaires contextuels.
           files: Passerelle-Mariage-Alexandra-Lucas-Windows.zip
           make_latest: true
