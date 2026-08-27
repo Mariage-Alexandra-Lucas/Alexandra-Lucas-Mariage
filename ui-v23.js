@@ -1,6 +1,6 @@
 (() => {
   const guests = [
-    'Alexandra','Alexandre','Boris','Chloé','Clémence','DJ','Éliane','Florian','Gérard','Joseph','Kevin','Khoil','Loris','Louise','Lucas','Lucas B','Marc','Marie-Jo','Marine','Maxime B','Maxime G','Maxime P','Méline','Michel A','Michel D','Michel T','Morgane','Nathalie','Nina','Nino','Quentin','Roman','Sarah','Sophie D','Sophie T','Sylvie'
+    'Alexandra','Alexandre','Boris','Chloé','Clémence','DJ','Éliane','Florian','Gérard','Isabelle','Joseph','Kevin','Khoil','Loris','Louise','Lucas','Lucas B','Marc','Marie-Jo','Marine','Maxime B','Maxime G','Maxime P','Méline','Michel A','Michel D','Michel T','Morgane','Nathalie','Nina','Nino','Quentin','Roman','Sarah','Sophie D','Sophie T','Sylvie'
   ].sort((a,b)=>a.localeCompare(b,'fr',{sensitivity:'base'}));
 
   const protectedUsers = new Set(['alexandra','lucas','dj']);
